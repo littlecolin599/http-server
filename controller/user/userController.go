@@ -1,6 +1,7 @@
 package user
 
 import (
+	"http-server/task"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,4 +20,15 @@ func (UserController) DoLogin(c *gin.Context) {
 
 func (UserController) Welcome(c *gin.Context) {
 	c.HTML(http.StatusOK, "welcome.html", gin.H{})
+}
+
+func (UserController) GetImage(c *gin.Context) {
+	c.HTML(http.StatusOK, "picture.html", gin.H{})
+}
+
+func (UserController) GetVideo(c *gin.Context) {
+	c.HTML(http.StatusOK, "video.html", gin.H{})
+}
+func (UserController) DoSomething(c *gin.Context) {
+	task.TaskAdd(1, 2)
 }
