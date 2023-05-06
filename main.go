@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	go task.Start()     // 启动异步任务worker
-	go task.StartCron() // 启动定时任务
+	go task.Start() // 启动异步任务worker
+	// go task.StartCron() // 启动定时任务
 
 	r := gin.Default()
 
@@ -21,6 +21,6 @@ func main() {
 	routers.UserRouterInit(r)
 	routers.DefaultRouters(r)
 
-	r.Run()
+	r.Run(":8080")
 
 }
