@@ -1,13 +1,11 @@
 package user
 
 import (
-	"encoding/json"
 	"fmt"
 	"http-server/models"
 	"http-server/task"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,17 +24,17 @@ func (UserController) DoLogin(c *gin.Context) {
 		fmt.Println("doLogin", userName, password)
 
 		//实例化
-		userOfPhone := []models.User{}
-		userOfEmail := []models.User{}
+		user := []models.User{}
 		//GORM 原生数据库操作进行封装  增删查改
-		err1 := models.DB.Where("phone=?", userName).Find(&userOfPhone).Error
-		err2 := models.DB.Where("email=?", userName).Find(&userOfEmail).Error
-		if err1 != nil && err2 != nil {
+		err1 := models.DB.Where("phone=? AND password=?", userName, password).Find(&user).Error
 
+		if err1 != nil {
+			c.JSON(http.StatusOK, "登录失败，用户未注册")
+		} else {
+			c.HTML(http.StatusOK, "index.html", gin.H{})
 		}
-
 	}
-	c.HTML(http.StatusOK, "index.html", gin.H{})
+
 }
 
 func (UserController) DoRegiseter(c *gin.Context) {
@@ -44,7 +42,7 @@ func (UserController) DoRegiseter(c *gin.Context) {
 	if register == "register" {
 		email := c.PostForm("email")
 		phone := c.PostForm("phone")
-		password := c.PostForm("password")
+		password := models.Md5(c.PostForm("password"))
 
 		fmt.Println("doregister", register, email, phone)
 		//判断格式
@@ -77,18 +75,7 @@ func (UserController) DoRegiseter(c *gin.Context) {
 		if err != nil {
 			c.JSON(http.StatusOK, "注册失败")
 		} else {
-
-			session := sessions.Default(c)            //开启session服务
-			userinfo, _ := json.Marshal(user)         //序列化
-			session.Set("userinfo", string(userinfo)) //string化  Set方法设置关键字
-			err1 := session.Save()                    //Sava 保存
-			if err1 == nil {
-				c.Redirect(http.StatusMovedPermanently, "/")
-			} else {
-				c.JSON(http.StatusOK, "异常错误1")
-			}
 			c.Redirect(http.StatusMovedPermanently, "/")
-
 		}
 	} else {
 		c.Redirect(http.StatusMovedPermanently, "/login")

@@ -5,9 +5,8 @@
 package models
 
 type Read struct {
-
 }
 
-func (Read)TableName() string {
-	return "read" //表名
+func (Read) TableName() string {
+	return "user" //表名
 }
