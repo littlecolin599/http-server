@@ -8,6 +8,7 @@ import (
 	"gopkg.in/ini.v1"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
@@ -32,6 +33,7 @@ func init() {
 	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", user, password, ip, port, database)
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		QueryFields: true, //打印sql
+		Logger:      logger.Default.LogMode(logger.Info),
 		//SkipDefaultTransaction: true, //禁用事务
 	})
 	DB.Debug()

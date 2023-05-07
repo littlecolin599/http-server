@@ -26,10 +26,10 @@ func (UserController) DoLogin(c *gin.Context) {
 		//实例化
 		user := []models.User{}
 		//GORM 原生数据库操作进行封装  增删查改
-		err1 := models.DB.Where("phone=? AND password=?", userName, password).Find(&user).Error
+		result := models.DB.Where("phone=? AND password=?", userName, password).Find(&user)
 
-		if err1 != nil {
-			c.JSON(http.StatusOK, "登录失败，用户未注册")
+		if result.RowsAffected == 0 {
+			c.JSON(http.StatusInternalServerError, "用户未注册")
 		} else {
 			c.HTML(http.StatusOK, "index.html", gin.H{})
 		}
