@@ -96,3 +96,7 @@ func (UserController) GetVideo(c *gin.Context) {
 func (UserController) DoSomething(c *gin.Context) {
 	task.TaskAdd(1, 2)
 }
+
+func (UserController) DoLoginOut(c *gin.Context) {
+	c.Redirect(http.StatusMovedPermanently, "/")
+}

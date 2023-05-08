@@ -16,5 +16,6 @@ func UserRouterInit(r *gin.Engine) {
 		userRoutters.POST("/5", user.UserController{}.GetImage)
 		userRoutters.POST("/6", user.UserController{}.GetVideo)
 		userRoutters.POST("/7", user.UserController{}.DoSomething)
+		userRoutters.GET("doLoginOut", user.UserController{}.DoLoginOut)
 	}
 }
